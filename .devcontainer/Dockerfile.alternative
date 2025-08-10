@@ -1,0 +1,34 @@
+FROM node:20-slim
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y \
+        curl \
+        wget \
+        git \
+        openssh-client \
+        bash \
+        ca-certificates \
+        && rm -rf /var/lib/apt/lists/* \
+        && which wget \
+        && which curl
+
+# Install aws cli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && \
+    ./aws/install && \
+    rm -rf awscliv2.zip aws
+
+# Create node user
+RUN groupadd -r node && useradd -r -g node node
+
+# Set working directory
+WORKDIR /workspace
+
+# Change ownership to node user
+RUN chown -R node:node /workspace
+
+# Verify tools are available to node user
+USER node
+RUN which wget && which curl
+USER root 

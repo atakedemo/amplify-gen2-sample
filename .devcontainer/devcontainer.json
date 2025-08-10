@@ -1,0 +1,28 @@
+{
+    "name": "Alternative Dockerfile",
+    "build": {
+      "dockerfile": "Dockerfile.alternative",
+      "args": {
+        "VARIANT": "20-slim"
+      }
+    },
+    "forwardPorts": [3000],
+    "customizations": {
+      "vscode": {
+        "settings": {
+          "editor.formatOnSave": true,
+          "terminal.integrated.defaultProfile.linux": "bash"
+        },
+        "extensions": [
+          "dbaeumer.vscode-eslint",
+          "esbenp.prettier-vscode",
+          "mhutchie.git-graph",
+          "PKief.material-icon-theme",
+          "eamodio.gitlens"
+        ]
+      }
+    },
+    "remoteUser": "node",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "workspaceFolder": "/workspace"
+  }
