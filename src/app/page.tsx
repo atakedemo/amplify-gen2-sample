@@ -21,25 +21,26 @@ const TodoForm = ({ todo, handleUpdate, handleDelete }: TodoFormProps) => {
 
   useEffect(() => {
     setInput(todo.content || "");
-  }, []);
+  }, [todo.content]);
 
   return (
-    <div className="flex">
+    <div className="flex flex-col gap-2 w-full max-w-md">
       <input
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        className="border border-gray-300 rounded px-3 py-2 w-full"
       />
-      <div className="flex gap-1">
+      <div className="flex gap-2">
         <button
           onClick={() => handleUpdate(input)}
-          className="border-[1px] border-gray-500 px-2"
+          className="border-[1px] border-gray-500 px-3 py-1 rounded hover:bg-gray-100"
         >
           更新
         </button>
         <button
           onClick={handleDelete}
-          className="border-[1px] border-gray-500 px-2"
+          className="border-[1px] border-gray-500 px-3 py-1 rounded hover:bg-gray-100"
         >
           削除
         </button>
@@ -86,33 +87,44 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-      <div className="flex gap-1">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button
-          onClick={handleCreate}
-          className="border-[1px] border-gray-500 px-2 "
-        >
-          登録
-        </button>
-      </div>
-      {todos.map((todo) => {
-        return (
-          <div key={todo.id}>
-            <TodoForm
-              todo={todo}
-              handleUpdate={(content) => handleUpdate(todo.id, content)}
-              handleDelete={() => handleDelete(todo.id)}
-            />
-          </div>
-        );
-      })}
+    <div className="font-sans min-h-screen p-8 pb-20 sm:p-20">
+      <main className="max-w-2xl mx-auto flex flex-col gap-8">
+        <h1 className="text-2xl font-bold text-center mb-4">ToDo リスト</h1>
+        <div className="flex gap-2 justify-center">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="新しいToDoを入力"
+            className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
+          />
+          <button
+            onClick={handleCreate}
+            className="border-[1px] border-gray-500 px-4 py-2 rounded hover:bg-gray-100 whitespace-nowrap"
+          >
+            追加
+          </button>
+        </div>
+        <div className="flex flex-col gap-4">
+          {todos.map((todo) => {
+            return (
+              <div key={todo.id} className="border border-gray-200 rounded p-4 bg-white shadow-sm">
+                <TodoForm
+                  todo={todo}
+                  handleUpdate={(content) => handleUpdate(todo.id, content)}
+                  handleDelete={() => handleDelete(todo.id)}
+                />
+              </div>
+            );
+          })}
+        </div>
+        {todos.length === 0 && (
+          <p className="text-center text-gray-500 mt-8">ToDo項目がありません。新しいToDoを追加してください。</p>
+        )}
       </main>
+      <footer className="mt-16 text-center text-gray-500">
+        Footer
+      </footer>
     </div>
   );
 }
